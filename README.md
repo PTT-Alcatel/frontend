@@ -1,3 +1,3 @@
 # frontend
 
-# test close issues
+# test closing issues
