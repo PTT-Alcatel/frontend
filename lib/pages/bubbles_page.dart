@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pushtotalk/classes/bubble.dart';
 import 'package:pushtotalk/classes/rainbow_user.dart';
 import 'package:pushtotalk/components/base_scaffold.dart';
 import 'package:pushtotalk/components/bubble_card.dart';
-import 'package:pushtotalk/components/bubble_form_field.dart';
+import 'package:pushtotalk/repository/platform_repository.dart';
 import 'package:pushtotalk/services/bluetooth_impl.dart';
 import 'package:pushtotalk/components/bubble_creation_form.dart';
 import 'package:pushtotalk/services/locator_impl.dart';
@@ -19,7 +20,9 @@ class BubblesPage extends StatefulWidget {
 class _BubblesPageState extends State<BubblesPage> {
   LocatorImp locator = LocatorImp();
   BluetoothImpl bluetoothImpl = BluetoothImpl();
+  PlatformRepository platformRepository = PlatformRepository();
   List<BubbleCard> bubbleList = [];
+  List<Bubble> rainbowBubbles = [];
   @override
   void initState() {
     // print position
@@ -50,6 +53,13 @@ class _BubblesPageState extends State<BubblesPage> {
           locator.getCurrentLocation().then((value) => print(value));
           bluetoothImpl.startScan();
           await Future.delayed(const Duration(seconds: 2));
+          var rbBubbles = await platformRepository.getRainbowBubbles();
+          setState(() {
+            for (var element in rbBubbles) {
+              var tmpBubble = Bubble.fromMap(element);
+              rainbowBubbles.add(tmpBubble);
+            }
+          });
         },
         child: Container(
           color: Colors.white,

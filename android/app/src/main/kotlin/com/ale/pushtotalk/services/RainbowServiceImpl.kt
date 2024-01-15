@@ -4,7 +4,6 @@ import android.app.Application
 import android.util.Log
 import com.ale.infra.manager.room.CreateRoomBody
 import com.ale.infra.manager.room.IRainbowRoom
-import com.ale.infra.manager.room.Room
 import com.ale.infra.rest.listeners.RainbowError
 import com.ale.infra.rest.listeners.RainbowListener
 import com.ale.infra.rest.room.RoomRepository
@@ -104,5 +103,20 @@ class RainbowServiceImpl: RainbowService {
                     callback.onBubbleCreationError(result)
                 }
             })
+    }
+    override fun getRainbowBubbles(): MutableList<Map<String, String>> {
+        val rainbowBubbles = RainbowSdk.instance().bubbles().getAllBubbles()
+        val parsedBubbles = mutableListOf<Map<String, String>>()
+
+        for (room in rainbowBubbles.items) {
+            val bubble = mapOf(
+                "id" to room.id,
+                "name" to room.name,
+                "topic" to room.topic,
+                "creatorId" to room.creatorId
+            )
+            parsedBubbles.add(bubble)
+        }
+        return parsedBubbles
     }
 }
