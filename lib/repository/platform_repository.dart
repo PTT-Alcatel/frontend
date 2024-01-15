@@ -61,7 +61,7 @@ class PlatformRepository {
         "topic": topic,
       });
 
-      return Bubble.fromMap(result);
+      return Bubble.fromMap(result.cast<String, dynamic>());
     } on PlatformException catch (e) {
       // Handle the platform exception, show a snackbar, etc.
       throw Exception("Error creating bubble: ${e.message}");
