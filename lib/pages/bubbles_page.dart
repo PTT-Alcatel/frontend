@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:pushtotalk/classes/bubble.dart';
 import 'package:pushtotalk/classes/rainbow_user.dart';
 import 'package:pushtotalk/components/base_scaffold.dart';
@@ -31,6 +32,7 @@ class _BubblesPageState extends State<BubblesPage> {
     locator.getCurrentLocation().then((value) => print(value));
     bluetoothImpl.startScan();
     fetchBubbles();
+    checkNearlyBubbles();
     super.initState();
   }
 
@@ -48,6 +50,32 @@ class _BubblesPageState extends State<BubblesPage> {
       if (!alreadyExists) {
         setState(() {
           bubbles.add(filteredBubble);
+        });
+      }
+    }
+  }
+
+  void checkNearlyBubbles() async {
+    Position myPosition = await locator.getCurrentLocation();
+    for (var bubble in bubbles) {
+      bool isNear = await locator.isLocationNearFromMe(
+          myPosition: myPosition,
+          otherPosition: Position(
+            latitude: bubble.latitude,
+            longitude: bubble.longitude,
+            timestamp: DateTime(0),
+            accuracy: 0,
+            altitude: 0,
+            heading: 0,
+            speed: 0,
+            speedAccuracy: 0,
+            altitudeAccuracy: 0,
+            headingAccuracy: 0,
+          ),
+          distance: 5);
+      if (!isNear) {
+        setState(() {
+          bubbles.remove(bubble);
         });
       }
     }

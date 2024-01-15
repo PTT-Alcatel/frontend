@@ -24,6 +24,15 @@ class LocatorImp implements Locator {
     return await Geolocator.getCurrentPosition();
   }
 
+  Future<bool> isLocationNearFromMe(
+      {required Position myPosition,
+      required Position otherPosition,
+      required double distance}) async {
+    double distanceInMeters = Geolocator.distanceBetween(myPosition.latitude,
+        myPosition.longitude, otherPosition.latitude, otherPosition.longitude);
+    return distanceInMeters <= distance;
+  }
+
   @override
   Future<bool> verifyPermission() async {
     LocationPermission permission;
