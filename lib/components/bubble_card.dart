@@ -19,7 +19,7 @@ class _BubbleCardState extends State<BubbleCard> {
       child: Card(
         child: ListTile(
           title: Text(widget.bubble.name),
-          subtitle: Text(widget.bubble.topic),
+          subtitle: Text(widget.bubble.topic ?? ''),
           leading: const Icon(Icons.person),
           iconColor: Colors.black,
           textColor: Colors.black,

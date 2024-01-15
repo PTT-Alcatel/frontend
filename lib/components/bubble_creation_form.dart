@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pushtotalk/classes/bubble.dart';
@@ -136,21 +138,6 @@ class _BubbleCreationFormState extends State<BubbleCreationForm> {
                           if (formKey.currentState!.validate()) {
                             createBubbleAndNavigate(context);
                             Navigator.pop(context);
-                            // String name = nameController.text;
-                            // String topic = topicController.text;
-                            // var bubbleInformation =
-                            //     platformRepository.createBubble(name, topic);
-                            // print("La grosse crotte : $bubbleInformation");
-                            // BubbleCard newBubble = BubbleCard(
-                            //   bubble: Bubble(
-                            //     name: name,
-                            //     topic: topic,
-                            //     longitude: double.parse(longitude),
-                            //     latitude: double.parse(latitude),
-                            //   ),
-                            // );
-                            // widget.onBubbleCreated(newBubble);
-                            // TODO1 : Call method to create bubble from api_repository
                           }
                         });
                         nameController.clear();
@@ -181,6 +168,10 @@ class _BubbleCreationFormState extends State<BubbleCreationForm> {
       http.Response response = await apiRepository.createBubble(bubble);
       print("Response status code: ${response.statusCode}");
       print("Response body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        widget.onBubbleCreated(BubbleCard(bubble: bubble));
+      }
     } catch (error) {
       print("Error creating bubble: $error");
     }
