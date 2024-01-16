@@ -41,13 +41,21 @@ class _BubblesPageState extends State<BubblesPage> {
     List<Bubble> rainbowBubbles =
         rbBubbles.map((element) => Bubble.fromMap(element)).toList();
     List<Bubble> backBubbles = await apiRepository.getBubbles();
+
     var filteredRainbowBubbles = rainbowBubbles
         .where((rb) => backBubbles.any((bb) => bb.id == rb.id))
         .toList();
+
     for (var filteredBubble in filteredRainbowBubbles) {
       bool alreadyExists =
           bubbles.any((bubble) => bubble.id == filteredBubble.id);
       if (!alreadyExists) {
+        Bubble matchingBackBubble = backBubbles
+            .firstWhere((backBubble) => backBubble.id == filteredBubble.id);
+
+        filteredBubble.latitude = matchingBackBubble.latitude;
+        filteredBubble.longitude = matchingBackBubble.longitude;
+
         setState(() {
           bubbles.add(filteredBubble);
         });
@@ -57,8 +65,10 @@ class _BubblesPageState extends State<BubblesPage> {
 
   void checkNearlyBubbles() async {
     Position myPosition = await locator.getCurrentLocation();
+    List<Bubble> nearbyBubbles = [];
+
     for (var bubble in bubbles) {
-      bool isNear = await locator.isLocationNearFromMe(
+      bool isNear5m = await locator.isLocationNearFromMe(
           myPosition: myPosition,
           otherPosition: Position(
             latitude: bubble.latitude,
@@ -73,12 +83,21 @@ class _BubblesPageState extends State<BubblesPage> {
             headingAccuracy: 0,
           ),
           distance: 5);
-      if (!isNear) {
-        setState(() {
-          bubbles.remove(bubble);
-        });
+      print('my position $myPosition.latitude, $myPosition.longitude');
+      print('bubble position ${bubble.latitude}, ${bubble.longitude}');
+      print('isNear5m $isNear5m');
+      if (isNear5m) {
+        nearbyBubbles.add(bubble);
       }
+      setState(() {
+        bubbles = nearbyBubbles;
+      });
     }
+  }
+
+  void refreshBubblesLocation() {
+    fetchBubbles();
+    checkNearlyBubbles();
   }
 
   @override
@@ -102,7 +121,7 @@ class _BubblesPageState extends State<BubblesPage> {
         onRefresh: () async {
           locator.getCurrentLocation().then((value) => print(value));
           bluetoothImpl.startScan();
-          fetchBubbles();
+          refreshBubblesLocation();
         },
         child: Container(
           color: Colors.white,
