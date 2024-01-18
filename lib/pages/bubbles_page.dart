@@ -142,14 +142,8 @@ class _BubblesPageState extends State<BubblesPage> {
                 child: ListView.builder(
                   itemCount: 1,
                   itemBuilder: (context, index) {
-                    return BubbleCard(
-                      bubble: Bubble(
-                        id: '0',
-                        name: 'Aucun canal trouvé',
-                        topic: 'Aucune description',
-                        latitude: 0,
-                        longitude: 0,
-                      ),
+                    return const Center(
+                      child: Text('Aucun canal à proximité'),
                     );
                   },
                 ),
