@@ -67,4 +67,19 @@ class PlatformRepository {
       throw Exception("Error creating bubble: ${e.message}");
     }
   }
+
+  Future<List<Map<String, String>>> getRainbowBubbles() async {
+    try {
+      // The result will be a List of Maps after this call
+      final List<dynamic> result =
+          await platform.invokeMethod('getRainbowBubbles');
+
+      // Convert each item in the list to a Map<String, String>
+      return result.map((dynamic item) {
+        return Map<String, String>.from(item as Map);
+      }).toList();
+    } on PlatformException catch (e) {
+      throw Exception("Error getting bubbles: ${e.message}");
+    }
+  }
 }

@@ -55,6 +55,9 @@ class MainActivity(private val rainbowService: RainbowService = RainbowServiceIm
                 call.method.equals("createBubble") -> {
                     createBubble(call, result)
                 }
+                call.method.equals("getRainbowBubbles") -> {
+                    getRainbowBubbles(call, result)
+                }
             }
         }
     }
@@ -80,5 +83,9 @@ class MainActivity(private val rainbowService: RainbowService = RainbowServiceIm
 
     private fun getRainbowUser(call: MethodCall, result: MethodChannel.Result) {
         result.success(rainbowService.getRainbowUser());
+    }
+
+    private fun getRainbowBubbles(call: MethodCall, result: MethodChannel.Result) {
+        result.success(rainbowService.getRainbowBubbles());
     }
 }

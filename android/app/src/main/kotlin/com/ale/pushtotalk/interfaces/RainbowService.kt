@@ -12,4 +12,5 @@ interface RainbowService {
     fun isSdkInitialized(): Boolean
     fun isSignedIn(): Boolean
     fun getRainbowUser(): Map<String, String?>
+    fun getRainbowBubbles(): MutableList<Map<String, String>>
 }
