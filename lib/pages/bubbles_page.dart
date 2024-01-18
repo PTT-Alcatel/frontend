@@ -21,7 +21,7 @@ class BubblesPage extends StatefulWidget {
 
 class _BubblesPageState extends State<BubblesPage> {
   LocatorImp locator = LocatorImp();
-  BluetoothImpl bluetoothImpl = BluetoothImpl();
+  // BluetoothImpl bluetoothImpl = BluetoothImpl();
   PlatformRepository platformRepository = PlatformRepository();
   ApiRepository apiRepository = ApiRepository();
   List<Bubble> bubbles = [];
@@ -30,7 +30,7 @@ class _BubblesPageState extends State<BubblesPage> {
   void initState() {
     // print position
     locator.getCurrentLocation().then((value) => print(value));
-    bluetoothImpl.startScan();
+    // bluetoothImpl.startScan();
     fetchBubbles();
     checkNearlyBubbles();
     super.initState();
@@ -120,7 +120,7 @@ class _BubblesPageState extends State<BubblesPage> {
       body: RefreshIndicator(
         onRefresh: () async {
           locator.getCurrentLocation().then((value) => print(value));
-          bluetoothImpl.startScan();
+          // bluetoothImpl.startScan();
           refreshBubblesLocation();
         },
         child: Container(
