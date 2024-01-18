@@ -170,7 +170,20 @@ class _BubbleCreationFormState extends State<BubbleCreationForm> {
       print("Response body: ${response.body}");
 
       if (response.statusCode == 200) {
-        widget.onBubbleCreated(BubbleCard(bubble: bubble));
+        widget.onBubbleCreated(BubbleCard(
+            bubble: bubble,
+            myPosition: Position(
+              latitude: bubble.latitude,
+              longitude: bubble.longitude,
+              timestamp: DateTime(0),
+              accuracy: 0,
+              altitude: 0,
+              heading: 0,
+              speed: 0,
+              speedAccuracy: 0,
+              altitudeAccuracy: 0,
+              headingAccuracy: 0,
+            )));
       }
     } catch (error) {
       print("Error creating bubble: $error");

@@ -27,10 +27,26 @@ class _BubblesPageState extends State<BubblesPage> {
   List<Bubble> bubbles = [];
   List<Bubble> finalBubbles = [];
   List<BubbleCard> bubbleCardList = [];
+  Position myPosition = Position(
+    latitude: 0,
+    longitude: 0,
+    timestamp: DateTime(0),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
+  );
+
   @override
   void initState() {
-    // print position
-    locator.getCurrentLocation().then((value) => print(value));
+    locator.getCurrentLocation().then((value) {
+      setState(() {
+        myPosition = value;
+      });
+    });
     // bluetoothImpl.startScan();
     fetchBubbles();
     checkNearlyBubbles();
@@ -121,7 +137,11 @@ class _BubblesPageState extends State<BubblesPage> {
       title: 'Liste des canaux',
       body: RefreshIndicator(
         onRefresh: () async {
-          locator.getCurrentLocation().then((value) => print(value));
+          locator.getCurrentLocation().then((value) {
+            setState(() {
+              myPosition = value;
+            });
+          });
           // bluetoothImpl.startScan();
           refreshBubblesLocation();
         },
@@ -133,6 +153,7 @@ class _BubblesPageState extends State<BubblesPage> {
                   itemBuilder: (context, index) {
                     return BubbleCard(
                       bubble: finalBubbles[index],
+                      myPosition: myPosition,
                     );
                   },
                 ),
