@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 7.0.0-dev">
+  <meta name="description" content="pushtotalk API docs, for the Dart programming language.">
+  <title>pushtotalk - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">pushtotalk package</li>
+  </ol>
+  <div class="self-name">pushtotalk</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h2 id="pushtotalk---frontend">PushToTalk - Frontend</h2>
+<p>Frontend de l'application PTT pour Rainbow (Alcatel-Lucent Enterprise)</p>
+<h2 id="etat-actuel-du-frontend">Etat actuel du frontend</h2>
+<blockquote>
+<p>Terminé</p>
+</blockquote>
+<ul>
+<li>Possibilité de se connecter à l'application avec ses identifiants rainbow</li>
+<li>Possibilité de consulter son profil et se déconnecter</li>
+<li>Possibilité de remplir un formulaire de création de bulle avec ses coordonnées GPS</li>
+</ul>
+<blockquote>
+<p>TBD</p>
+</blockquote>
+<ul>
+<li>Création des bulles Rainbow en récupérant les informations du formulaire de création de bulle</li>
+<li>Création des bulles dans la BDD en récupérant les informations du formulaire de création de bulle (après création dans Rainbow) / en récupérant la bulle créée dans Rainbow + latitude + longitude + informations Bluetooth</li>
+<li>Modification, suppression des bulles dans Rainbow puis dans la BDD (seulement le créateur de la bulle peut agir sur ses bulles)</li>
+<li>Affichage des bonnes bulles dans l'UI en fonction de la position de l'utilisateur (comparaison entre la position de l'utilisateur (fonction d'actualisation de la position de l'utisateur en temps réel) et les positions des bulles dans la BDD)</li>
+<li>Bluetooth ?</li>
+<li>Veillez à la cohérance des données entre la BDD et Rainbow (les mêmes bulles doivent être présentes au deux endroits =&gt; fonction de check pour vérifier cela périodiquement)</li>
+<li>Connexion automatique à la bulle la plus proche</li>
+<li>Implémenter la communication vocale (WebRTC)</li>
+</ul>
+<h2 id="concept">Concept</h2>
+<ul>
+<li>Associer la localisation d'une personne avec des canaux vocaux</li>
+<li>L'entrée dans une zone géographique déclenchera l'insertion dans un canal</li>
+<li>Technologie de localisation : GPS et Bluetooth</li>
+</ul>
+<p><strong>Nouveauté</strong>
+App Wear OS : un QR code à scanner sur la montre permettra de relier l'application mobile et l'app wear os. Elle servira de bouton physique pour le push-to-talk</p>
+<h2 id="technologies-utilises">Technologies utilisées</h2>
+<blockquote>
+<p>Dart avec le framework Flutter.
+Kotlin nécessaire pour l'utilisation du SDK Rainbow</p>
+</blockquote>
+<h2 id="pont-de-liaison">Pont de liaison</h2>
+<p>Afin de permettre la communication entre Flutter/Dart et le SDK Rainbow. Un "pont de liaison" a du être mis en place, d'où l'utilisation de Kotlin.</p>
+<ol>
+<li>Dart envoie un appel au Kotlin</li>
+<li>Kotlin communique avec le SDK Rainbow</li>
+<li>Kotlin renvoie les informations a Dart</li>
+<li>Dart récupère et met à jour les vues</li>
+</ol>
+<blockquote>
+<p>Aperçu du fonctionnement du pont de liaison</p>
+</blockquote>
+<p><img src="docs/images/method_channel.png" alt="Methode_channel"></p>
+<h2 id="dpendances">Dépendances</h2>
+<blockquote>
+<p>Flutter</p>
+</blockquote>
+<pre class="language-dart"><code>geolocator: 10.1.0
+flutter_blue_plus: 1.29.3
+</code></pre>
+<blockquote>
+<p>Kotlin</p>
+</blockquote>
+<pre class="language-dart"><code>rainbowsdk: 2.40.0
+</code></pre>
+<h2 id="prrequis">Prérequis</h2>
+<ul>
+<li>Java</li>
+<li><a href="https://developer.android.com/studio">Android Studio</a>. Une fois installé, pensez à télécharger les "Android SDK Command-line Tools" depuis le SDK Manager &gt; SDK Tools d'Android Studio</li>
+<li>Emulateur sous <strong>API 34</strong>, configurable depuis Android Studio dans le Device Manager</li>
+<li><a href="https://docs.flutter.dev/get-started/install/windows">Flutter</a>, suivre <strong><em>scrupuleusement</em></strong> la documentation d'installation. Elle contient également des informations utiles sur Android Studio</li>
+<li><a href="https://code.visualstudio.com/download">VS Code</a>, avec (au moins) les plugins : Dart, Flutter, iOS Emulator (afin d'utiliser votre émulateur dans VS Code)</li>
+<li>Un compte Rainbow développeur avec une <a href="https://developers.openrainbow.com/sandbox"><strong>Application Sandbox</strong></a>. Sans elle, il vous sera impossible d'initialiser le SDK Rainbow depuis le projet PTT. Pour plus d'informations sur l'obtention d'un compte Rainbow développeur, voir la <a href="https://developers.openrainbow.com/doc/hub/getting-started">documentation officielle</a></li>
+</ul>
+<h2 id="excution">Exécution</h2>
+<pre class="language-dart"><code>git clone https://github.com/PTT-Alcatel/frontend
+cd frontend
+flutter pub get
+// Lancez votre émulateur Android avant de lancer la commande flutter run
+flutter run
+</code></pre>
+<h2 id="informations-complmentaires">Informations complémentaires</h2>
+<h3 id="dveloppement">Développement</h3>
+<p>Il est recommandé d'utiliser VS Code avec les plugins suscités pour la partie Dart/Flutter (fichiers dans <strong>lib/</strong>)</p>
+<p><img src="docs/images/dart_structure.png" alt="Dart structure"></p>
+<p><em>Point d'entrée : <strong>main.dart</strong></em></p>
+<p>Il est recommandé d'utiliser Android Studio pour la partie Kotlin afin d'avoir une aide syntaxique (fichiers dans <strong>android/</strong>). Pensez d'ailleurs à uniquement ouvrir la partie <strong>android</strong> de l'application dans Android Studio</p>
+<p><img src="docs/images/kotlin_structure.png" alt="Kotlin structure"></p>
+<h3 id="hot-reload">Hot Reload</h3>
+<p>Flutter dispose du hot reload. Pas besoin de rebuild l'application à chaque modification ! Il suffit de sauvegarder les fichiers modifiés.</p>
+<h3 id="communication-dart---sdk-rainbow">Communication Dart - SDK Rainbow</h3>
+<p>Ce schéma a pour but d'expliquer brièvement et simplement le cheminement d'une requête vers Rainbow rendu possible grâce au pont de liaison (MethodChannel)</p>
+<p><img src="docs/images/rainbowsdk_communication.png" alt="Rainbow SDK communication"></p>
+<h2 id="fichier-env">Fichier env</h2>
+<p>Le frontend utilise un fichier <code>env</code> comportant un ApplicationID et un ApplicationSecret. Ces deux éléments correspondent aux informations de votre <strong>Application Sandbox</strong> précédemment créée. Ce fichier se trouve dans : <code>android/app/src/main/assets/env</code>. Pensez à le mettre à jour / le créer.</p>
+<p><img src="docs/images/env.png" alt="Env"></p>
+<h2 id="liens-utiles">Liens utiles</h2>
+<p><a href="https://docs.flutter.dev/">Documentation Flutter</a></p>
+<p><a href="https://developers.openrainbow.com/doc/sdk/android/lts/modules/android_sdk/com.ale.rainbowsdk/index.html">rainbowSdk</a></p>
+<p><a href="https://docs.flutter.dev/platform-integration/platform-channels?tab=android-channel-java-tab">Platform Channels</a> (Pont de liaison)</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="api">
+  <span class="name"><a href="interfaces_api/interfaces_api-library.html">api</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="api_repository">
+  <span class="name"><a href="repository_api_repository/repository_api_repository-library.html">api_repository</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="api_service">
+  <span class="name"><a href="services_api_service/services_api_service-library.html">api_service</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="base_scaffold">
+  <span class="name"><a href="components_base_scaffold/components_base_scaffold-library.html">base_scaffold</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="bluetooth">
+  <span class="name"><a href="interfaces_bluetooth/interfaces_bluetooth-library.html">bluetooth</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="bluetooth_impl">
+  <span class="name"><a href="services_bluetooth_impl/services_bluetooth_impl-library.html">bluetooth_impl</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="bubble">
+  <span class="name"><a href="classes_bubble/classes_bubble-library.html">bubble</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="bubble_card">
+  <span class="name"><a href="components_bubble_card/components_bubble_card-library.html">bubble_card</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="bubble_creation_form">
+  <span class="name"><a href="components_bubble_creation_form/components_bubble_creation_form-library.html">bubble_creation_form</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="bubble_form_field">
+  <span class="name"><a href="components_bubble_form_field/components_bubble_form_field-library.html">bubble_form_field</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="bubble_modification_forrm">
+  <span class="name"><a href="components_bubble_modification_forrm/components_bubble_modification_forrm-library.html">bubble_modification_forrm</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="bubbles_page">
+  <span class="name"><a href="pages_bubbles_page/pages_bubbles_page-library.html">bubbles_page</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="colors">
+  <span class="name"><a href="utils_colors/utils_colors-library.html">colors</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="custom_snackbar">
+  <span class="name"><a href="utils_custom_snackbar/utils_custom_snackbar-library.html">custom_snackbar</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="custom_text_field">
+  <span class="name"><a href="components_custom_text_field/components_custom_text_field-library.html">custom_text_field</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="home_page">
+  <span class="name"><a href="pages_home_page/pages_home_page-library.html">home_page</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="locator">
+  <span class="name"><a href="interfaces_locator/interfaces_locator-library.html">locator</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="locator_impl">
+  <span class="name"><a href="services_locator_impl/services_locator_impl-library.html">locator_impl</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="main">
+  <span class="name"><a href="main/main-library.html">main</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="platform_repository">
+  <span class="name"><a href="repository_platform_repository/repository_platform_repository-library.html">platform_repository</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="profile_page">
+  <span class="name"><a href="pages_profile_page/pages_profile_page-library.html">profile_page</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="rainbow_user">
+  <span class="name"><a href="classes_rainbow_user/classes_rainbow_user-library.html">rainbow_user</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="voice_page">
+  <span class="name"><a href="pages_voice_page/pages_voice_page-library.html">voice_page</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li class="self-crumb">pushtotalk package</li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">pushtotalk</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="interfaces_api/interfaces_api-library.html">api</a></li>
+      <li><a href="repository_api_repository/repository_api_repository-library.html">api_repository</a></li>
+      <li><a href="services_api_service/services_api_service-library.html">api_service</a></li>
+      <li><a href="components_base_scaffold/components_base_scaffold-library.html">base_scaffold</a></li>
+      <li><a href="interfaces_bluetooth/interfaces_bluetooth-library.html">bluetooth</a></li>
+      <li><a href="services_bluetooth_impl/services_bluetooth_impl-library.html">bluetooth_impl</a></li>
+      <li><a href="classes_bubble/classes_bubble-library.html">bubble</a></li>
+      <li><a href="components_bubble_card/components_bubble_card-library.html">bubble_card</a></li>
+      <li><a href="components_bubble_creation_form/components_bubble_creation_form-library.html">bubble_creation_form</a></li>
+      <li><a href="components_bubble_form_field/components_bubble_form_field-library.html">bubble_form_field</a></li>
+      <li><a href="components_bubble_modification_forrm/components_bubble_modification_forrm-library.html">bubble_modification_forrm</a></li>
+      <li><a href="pages_bubbles_page/pages_bubbles_page-library.html">bubbles_page</a></li>
+      <li><a href="utils_colors/utils_colors-library.html">colors</a></li>
+      <li><a href="utils_custom_snackbar/utils_custom_snackbar-library.html">custom_snackbar</a></li>
+      <li><a href="components_custom_text_field/components_custom_text_field-library.html">custom_text_field</a></li>
+      <li><a href="pages_home_page/pages_home_page-library.html">home_page</a></li>
+      <li><a href="interfaces_locator/interfaces_locator-library.html">locator</a></li>
+      <li><a href="services_locator_impl/services_locator_impl-library.html">locator_impl</a></li>
+      <li><a href="main/main-library.html">main</a></li>
+      <li><a href="repository_platform_repository/repository_platform_repository-library.html">platform_repository</a></li>
+      <li><a href="pages_profile_page/pages_profile_page-library.html">profile_page</a></li>
+      <li><a href="classes_rainbow_user/classes_rainbow_user-library.html">rainbow_user</a></li>
+      <li><a href="pages_voice_page/pages_voice_page-library.html">voice_page</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    pushtotalk
+      1.0.0+1
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+
