@@ -137,8 +137,22 @@ class _BubblesPageState extends State<BubblesPage> {
                   },
                 ),
               )
-            : const Center(
-                child: Text('Aucune bulle à proximité'),
+            : Container(
+                color: Colors.white,
+                child: ListView.builder(
+                  itemCount: 1,
+                  itemBuilder: (context, index) {
+                    return BubbleCard(
+                      bubble: Bubble(
+                        id: '0',
+                        name: 'Aucun canal trouvé',
+                        topic: 'Aucune description',
+                        latitude: 0,
+                        longitude: 0,
+                      ),
+                    );
+                  },
+                ),
               ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -151,6 +165,7 @@ class _BubblesPageState extends State<BubblesPage> {
                     setState(() {
                       bubbles.add(newBubble.bubble);
                     });
+                    refreshBubblesLocation();
                   },
                 );
               });
