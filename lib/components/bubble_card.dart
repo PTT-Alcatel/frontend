@@ -82,11 +82,12 @@ class _BubbleCardState extends State<BubbleCard> {
       builder: (BuildContext context) {
         return BubbleModificationForm(
           bubble: widget.bubble,
-          onBubbleModified: (modifiedBubble) {
-            print('Modified Bubble: $modifiedBubble');
+          onBubbleUpdated: (Bubble bubble) {
+            print('Updated Bubble: ${bubble.name}');
           },
-          onBubbleUpdated: (Bubble) {},
-          onBubbleDeleted: (Bubble) {},
+          onBubbleDeleted: (Bubble bubble) {
+            print('Deleted Bubble: ${bubble.id}');
+          },
         );
       },
     );

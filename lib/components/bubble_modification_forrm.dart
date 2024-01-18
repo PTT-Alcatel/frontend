@@ -12,7 +12,6 @@ class BubbleModificationForm extends StatefulWidget {
     required this.bubble,
     required this.onBubbleUpdated,
     required this.onBubbleDeleted,
-    required Null Function(dynamic modifiedBubble) onBubbleModified,
   }) : super(key: key);
 
   @override
@@ -84,7 +83,7 @@ class _BubbleModificationFormState extends State<BubbleModificationForm> {
                               Navigator.pop(context);
                             });
                           },
-                          label: const Text('Supprimer'),
+                          label: const Text('Delete'),
                           icon: const Icon(Icons.delete),
                         ),
                         ElevatedButton.icon(
@@ -96,7 +95,7 @@ class _BubbleModificationFormState extends State<BubbleModificationForm> {
                               }
                             });
                           },
-                          label: const Text('Mettre à jour'),
+                          label: const Text('Update'),
                           icon: const Icon(Icons.update),
                         ),
                       ],
