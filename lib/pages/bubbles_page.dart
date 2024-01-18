@@ -25,6 +25,7 @@ class _BubblesPageState extends State<BubblesPage> {
   PlatformRepository platformRepository = PlatformRepository();
   ApiRepository apiRepository = ApiRepository();
   List<Bubble> bubbles = [];
+  List<Bubble> finalBubbles = [];
   List<BubbleCard> bubbleCardList = [];
   @override
   void initState() {
@@ -89,10 +90,11 @@ class _BubblesPageState extends State<BubblesPage> {
       if (isNear5m) {
         nearbyBubbles.add(bubble);
       }
-      setState(() {
-        bubbles = nearbyBubbles;
-      });
     }
+
+    setState(() {
+      finalBubbles = nearbyBubbles;
+    });
   }
 
   void refreshBubblesLocation() {
@@ -123,17 +125,21 @@ class _BubblesPageState extends State<BubblesPage> {
           // bluetoothImpl.startScan();
           refreshBubblesLocation();
         },
-        child: Container(
-          color: Colors.white,
-          child: ListView.builder(
-            itemCount: bubbles.length,
-            itemBuilder: (context, index) {
-              return BubbleCard(
-                bubble: bubbles[index],
-              );
-            },
-          ),
-        ),
+        child: finalBubbles.isNotEmpty
+            ? Container(
+                color: Colors.white,
+                child: ListView.builder(
+                  itemCount: finalBubbles.length,
+                  itemBuilder: (context, index) {
+                    return BubbleCard(
+                      bubble: finalBubbles[index],
+                    );
+                  },
+                ),
+              )
+            : const Center(
+                child: Text('Aucune bulle à proximité'),
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
