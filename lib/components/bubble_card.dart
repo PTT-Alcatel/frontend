@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pushtotalk/components/bubble_modification_forrm.dart';
 import 'package:pushtotalk/pages/voice_page.dart';
 import 'package:pushtotalk/classes/bubble.dart';
 
@@ -17,9 +18,7 @@ class _BubbleCardState extends State<BubbleCard> {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: GestureDetector(
-        onTap: () {
-          print('eee');
-        },
+        onTap: _showBubbleModificationForm,
         child: Card(
           child: ListTile(
             title: Text(widget.bubble.name),
@@ -41,6 +40,22 @@ class _BubbleCardState extends State<BubbleCard> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showBubbleModificationForm() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return BubbleModificationForm(
+          bubble: widget.bubble,
+          onBubbleModified: (modifiedBubble) {
+            print('Modified Bubble: $modifiedBubble');
+          },
+          onBubbleUpdated: (Bubble) {},
+          onBubbleDeleted: (Bubble) {},
+        );
+      },
     );
   }
 }
