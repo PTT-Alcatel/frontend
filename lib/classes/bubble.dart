@@ -27,22 +27,22 @@ class Bubble {
   // Only used for the backend
   factory Bubble.fromJson(Map<String, dynamic> json) {
     return Bubble(
-      id: json['bubble_GUID'] as String,
+      id: json['id'] as String,
       name: json['name'] as String,
       latitude: json['latitude'] as double,
       longitude: json['longitude'] as double,
-      creatorId: json['creator'] as String,
+      creatorId: json['creatorId'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'bubble_GUID': id,
+      'id': id,
       'name': name,
       'topic': topic,
       'latitude': latitude,
       'longitude': longitude,
-      'creator': creatorId,
+      'creatorId': creatorId,
     };
   }
 }
