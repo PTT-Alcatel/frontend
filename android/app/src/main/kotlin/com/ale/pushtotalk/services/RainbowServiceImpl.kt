@@ -1,9 +1,12 @@
 package com.ale.pushtotalk.services
 
 import android.app.Application
+import android.content.pm.PackageManager
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.ale.infra.manager.room.CreateRoomBody
 import com.ale.infra.manager.room.IRainbowRoom
+import com.ale.infra.rest.conference.ConferenceRepository
 import com.ale.infra.rest.listeners.RainbowError
 import com.ale.infra.rest.listeners.RainbowListener
 import com.ale.infra.rest.room.RoomRepository
@@ -16,7 +19,6 @@ import com.ale.rainbow.RBLog
 import com.ale.rainbowsdk.RainbowSdk
 import io.flutter.plugin.common.MethodChannel
 import org.tinylog.Level
-
 
 class RainbowServiceImpl: RainbowService {
 
@@ -119,4 +121,24 @@ class RainbowServiceImpl: RainbowService {
         }
         return parsedBubbles
     }
+
+    override fun createConferenceCall(
+        bubbleId: String,
+        callback: BubbleCallback,
+        result: MethodChannel.Result
+    ) {
+        val rainbowRoom = RainbowSdk.instance().bubbles().findBubbleById(bubbleId)
+        Log.d("RainbowSdk", "createConferenceCall: $rainbowRoom")
+        RainbowSdk.instance().conferences()
+            .startAndJoinConference(rainbowRoom, object : RainbowListener<String, ConferenceRepository.StartJoinConferenceError> {
+                override fun onSuccess(bubbleId: String) {
+                    RainbowSdk.instance().webRTC().makeConferenceCall(bubbleId, false, "prout")
+                }
+
+                override fun onError(error: RainbowError<ConferenceRepository.StartJoinConferenceError>) {
+                    RainbowSdk.instance().webRTC().makeConferenceCall(bubbleId, false, "prout")
+                }
+            })
+    }
+
 }

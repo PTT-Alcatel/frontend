@@ -5,6 +5,7 @@ import io.flutter.plugin.common.MethodChannel
 
 
 interface RainbowService {
+    fun createConferenceCall(bubbleId: String, callback: BubbleCallback, result: MethodChannel.Result)
     fun createBubble(name: String, topic: String, callback: BubbleCallback, result: MethodChannel.Result)
     fun login(email: String, password: String, callback: LoginCallback, result: MethodChannel.Result)
     fun logout()
